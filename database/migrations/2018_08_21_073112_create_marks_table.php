@@ -16,9 +16,9 @@ class CreateMarksTable extends Migration
         Schema::create('marks', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('student_id')->unsigned()->index();
-            $table->foreign('student_id')->references('id')->on('students');
+            $table->foreign('student_id')->references('id')->on('students')->onDelite('сascade');
             $table->integer('subject_id')->unsigned()->index();
-            $table->foreign('subject_id')->references('id')->on('subjects');
+            $table->foreign('subject_id')->references('id')->on('subjects')->onDelite('сascade');
             $table->date('date');
             $table->integer('mark');
             $table->timestamps();
