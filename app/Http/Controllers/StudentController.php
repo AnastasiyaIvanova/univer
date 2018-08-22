@@ -3,22 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Group;
 use App\Student;
-use App\Http\Requests;
+use App\Subject;
+use App\Mark;
 
-class GroupController extends Controller
+class StudentController extends Controller
 {
-    protected $groups;
     /**
      * Display a listing of the resource.
-     *2
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $groups = Group::all();
-        return view('groups.index', ['groups'=>$groups]);
+        $students = Student::all();
+        $subjects = Subject::all();
+        //????????How to get marks of student and replace on right subject
+        $marks = Mark::with('students')->get();
+
+        return view('students.index', ['students'=>$students,'subjects'=>$subjects]);
+    }
+
+    public function filter($id)
+    {
+        $students = Student::all()->where('group_id',$id);
+        return view('students.index', ['students'=>$students]);
     }
 
     /**
@@ -39,11 +48,11 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        Group::create([
-                 'name' => $request->name,
-             ]);
-
-            return redirect('/groups');
+        Student::create(array(
+            'name' => $request->name,
+            'group_id' => $request->group_id
+        ));
+            return redirect('/students');
     }
 
     /**
@@ -88,7 +97,7 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-        Group::where('id',$id)->delete();
-        return redirect('/groups');
+        Student::where('id',$id)->delete();
+        return redirect('/students');
     }
 }

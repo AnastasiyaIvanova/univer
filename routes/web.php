@@ -15,4 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('groups', 'GroupController');
+Route::resources([
+    'groups' => 'GroupController',
+    'students' => 'StudentController',
+    'marks' => 'MarkController',
+    'subjects' => 'subjectController'
+  ]);
+
+  Route::get('/student/{id}', 'StudentController@filter');

@@ -19,7 +19,6 @@ class CreateMarksTable extends Migration
             $table->foreign('student_id')->references('id')->on('students')->onDelite('сascade');
             $table->integer('subject_id')->unsigned()->index();
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelite('сascade');
-            $table->date('date');
             $table->integer('mark');
             $table->timestamps();
         });

@@ -3,22 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Group;
-use App\Student;
-use App\Http\Requests;
+use App\Mark;
 
-class GroupController extends Controller
+class MarkController extends Controller
 {
-    protected $groups;
     /**
      * Display a listing of the resource.
-     *2
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $groups = Group::all();
-        return view('groups.index', ['groups'=>$groups]);
+        $marks = Mark::all();
+        return view('marks.index', ['marks'=>$marks]);
     }
 
     /**
@@ -39,11 +36,12 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        Group::create([
-                 'name' => $request->name,
-             ]);
-
-            return redirect('/groups');
+        Mark::create(array(
+            'mark' => $request->mark,
+            'student_id' => $request->student_id,
+            'subject_id' => $request->subject_id
+        ));
+            return redirect('/marks');
     }
 
     /**
@@ -88,7 +86,7 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-        Group::where('id',$id)->delete();
-        return redirect('/groups');
+        Mark::where('id',$id)->delete();
+        return redirect('/marks');
     }
 }

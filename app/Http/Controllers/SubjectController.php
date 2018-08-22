@@ -3,22 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Group;
-use App\Student;
-use App\Http\Requests;
 
-class GroupController extends Controller
+class SubjectController extends Controller
 {
-    protected $groups;
     /**
      * Display a listing of the resource.
-     *2
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $groups = Group::all();
-        return view('groups.index', ['groups'=>$groups]);
+        //
     }
 
     /**
@@ -39,11 +34,7 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        Group::create([
-                 'name' => $request->name,
-             ]);
-
-            return redirect('/groups');
+        //
     }
 
     /**
@@ -88,7 +79,6 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-        Group::where('id',$id)->delete();
-        return redirect('/groups');
+        //
     }
 }
