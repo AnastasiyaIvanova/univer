@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Student;
 use App\Subject;
 use App\Mark;
+use App\Group;
 
 class StudentController extends Controller
 {
@@ -17,17 +18,35 @@ class StudentController extends Controller
     public function index()
     {
         $students = Student::all();
-        $subjects = Subject::all();
-        //????????How to get marks of student and replace on right subject
-        $marks = Mark::with('students')->get();
 
-        return view('students.index', ['students'=>$students,'subjects'=>$subjects]);
+        return view('student.index',['students'=>$students]);
     }
 
     public function filter($id)
     {
+        $subjects = Subject::all();
+        // $score=Mark::with(['students' => function ($query) use($id) {
+        //     $query->where('group_id',$id);
+        // }])->mark;
+
         $students = Student::all()->where('group_id',$id);
-        return view('students.index', ['students'=>$students]);
+        $score=Mark::with('students')->where('subject_id',1)->first()->mark;
+        //How to use!!!!!!!
+        // @foreach($students->marks as $mark)
+        // <td class="table-text"><div>{{ $mark->mark }}</div></td>
+        // @endforeach
+
+        $students=Student::with('marks','groups')->where('group_id',$id)->get();
+
+
+        // $group = Group::with('students')->get();//???????????
+        // $group->where('id', 1)->students;
+        //$groups = Group::with('students','mark')->get();
+
+        //$marks=Mark::with('students','groups')->get();
+
+
+        return view('students.index', compact('score','students','subjects','groups'));
     }
 
     /**

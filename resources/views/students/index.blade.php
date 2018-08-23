@@ -17,6 +17,7 @@
                               @foreach ($subjects as $subject)
                               <th>{{$subject->name}}</th>
                               @endforeach
+                              <th>Average</th>
                               <th>&nbsp;</th>
                           </thead>
                           <tbody>
@@ -24,6 +25,12 @@
                                   <tr>
                                       <td class="table-text"><div>{{ $student->name }}</div></td>
                                       <td class="table-text"><div>{{ $student->group_id }}</div></td>
+                                      @if (count($student->marks) > 0)
+                                      @foreach ($subjects as $subject)
+                                      <td class="table-text"><div>{{ $student->marks->where('subject_id',$subject->id)->first()->mark }}</div></td>
+                                      @endforeach
+                                      <td class="table-text"><div>{{ $student->marks->avg('mark') }}</div></td>
+                                      @endif
 
                                       <!-- Student Delete Button -->
                                       <td>

@@ -23,6 +23,13 @@
                     margin-right: 6px;
                 }
             </style>
+
+            <script>
+              $('td.table-text').each(function(){
+              var x = $(this).text();
+              if (x > 0) $(this).css({color: 'red'});
+              });
+            </script>
     </head>
 
     <body>
