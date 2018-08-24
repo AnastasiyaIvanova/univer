@@ -36,6 +36,13 @@
                                               </button>
                                           </form>
                                       </td>
+                                      <td>
+                                          <form action="{{route('groups.edit', $group->id)}}" method="GET">
+                                              <button type="submit" id="edit-task-{{ $group->id }}" class="btn btn-danger">
+                                                  <i class="fa fa-btn fa-trash"></i>Edit
+                                              </button>
+                                          </form>
+                                      </td>
                                   </tr>
                               @endforeach
                           </tbody>

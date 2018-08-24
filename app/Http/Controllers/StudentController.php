@@ -19,14 +19,15 @@ class StudentController extends Controller
     {
         $students = Student::all();
 
-        return view('student.index',['students'=>$students]);
+        return view('students.index',['students'=>$students]);
     }
 
     public function filter($id)
     {
+        $group=$id;
         $subjects = Subject::all();
-        $students = Student::all()->where('group_id',$id);
-        $students=Student::with('marks','groups')->where('group_id',$id)->get();
+        $students = Student::where('group_id',$id)->get();
+        $students=Student::where('group_id',$id)->with('marks','groups')->get();
 
         return view('students.index', compact('students','subjects'));
     }
@@ -38,7 +39,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        return view('students.create');
     }
 
     /**
@@ -50,10 +51,10 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         Student::create(array(
-            'name' => $request->name,
+            'first_name' => $request->first_name,
             'group_id' => $request->group_id
         ));
-            return redirect('/students');
+            return redirect('/groups');
     }
 
     /**
@@ -75,7 +76,10 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        //
+        $student = Student::find($id);
+        dd($group);
+        return view('students.edit')
+            ->with('student', $student);
     }
 
     /**
@@ -87,7 +91,14 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Student::update(array(
+        //     'name' => $request->name,
+        //     'group_id' => $request->group_id
+        // ));
+        $student = Student::findOrFail($id);
+        $input = request()->all();
+        $student->update($input);
+        return redirect('/groups');
     }
 
     /**

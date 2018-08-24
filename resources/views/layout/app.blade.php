@@ -30,16 +30,14 @@
         <div class="container">
             <nav class="navbar navbar-default">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="{{route('students.index')}}">
-                        Students
-                    </a>
                     <a class="navbar-brand" href="{{route('groups.index')}}">
                         Groups
                     </a>
-                    <a class="navbar-brand" href="{{route('marks.index')}}">
-                        Marks
+                    <a class="navbar-brand" href="{{url('average')}}">
+                        Average
                     </a>
                 </div>
+
             </nav>
         </div>
 

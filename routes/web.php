@@ -23,3 +23,4 @@ Route::resources([
   ]);
 
   Route::get('/student/{id}', 'StudentController@filter');
+  Route::get('average', 'AverageController@index');

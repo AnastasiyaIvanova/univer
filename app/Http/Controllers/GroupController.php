@@ -65,7 +65,11 @@ class GroupController extends Controller
      */
     public function edit($id)
     {
-        //
+      Group::create([
+               'name' => $request->name,
+           ]);
+
+          return redirect('/groups');
     }
 
     /**

@@ -10,7 +10,7 @@
 
 
                   <div class="panel-body">
-                      <table class="table table-striped task-table">
+                      <table class="table task-table">
                           <thead>
                               <th>Student</th>
                               <th>Group</th>
@@ -22,8 +22,8 @@
                           </thead>
                           <tbody>
                               @foreach ($students as $student)
-                                  <tr>
-                                      <td class="table-text"><div>{{ $student->name }}</div></td>
+                                  <tr class="table-success">
+                                      <td class="table-text"><div>{{ $student->first_name }}</div></td>
                                       <td class="table-text"><div>{{ $student->group_id }}</div></td>
                                       @if (count($student->marks) > 0)
                                       @foreach ($subjects as $subject)
@@ -44,6 +44,13 @@
                                               </button>
                                           </form>
                                       </td>
+                                      <td>
+                                          <form action="{{route('students.edit', $student->id)}}" method="GET">
+                                              <button type="submit" id="edit-task-{{ $student->id }}" class="btn btn-danger">
+                                                  <i class="fa fa-btn fa-trash"></i>Edit
+                                              </button>
+                                          </form>
+                                      </td>
                                   </tr>
                               @endforeach
                           </tbody>
@@ -52,38 +59,12 @@
               </div>
           @endif
 
+          <form action="{{route('students.create', $student->id)}}" method="GET">
+              <button type="submit" id="create-task-{{ $student->id }}" class="btn btn-danger">
+                  <i class="fa fa-btn fa-trash"></i>Add
+              </button>
+          </form>
 
-
-        <!-- New Student Form -->
-        <form action="{{ route('students.store') }}" method="POST" class="form-horizontal">
-            {{ csrf_field() }}
-
-            <!-- Student Name -->
-            <div class="form-group">
-                <label for="student-name" class="col-sm-3 control-label">Student-name</label>
-                <div class="col-sm-6">
-                    <input type="text" name="name" id="student-name" class="form-control">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="group-id" class="col-sm-3 control-label">Student-group</label>
-                <div class="col-sm-6">
-                    <input type="text" name="group_id" id="group-id" class="form-control">
-                </div>
-            </div>
-
-
-
-            <!-- Add Task Button -->
-            <div class="form-task">
-                <div class="col-sm-offset-3 col-sm-6">
-                    <button type="submit" class="btn btn-default">
-                        <i class="fa fa-plus"></i> Add Student
-                    </button>
-                </div>
-            </div>
-        </form>
     </div>
 </div>
 @endsection
