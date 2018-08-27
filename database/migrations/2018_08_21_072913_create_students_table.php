@@ -15,9 +15,9 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('ФИО');
+            $table->string('name');
             $table->integer('group_id')->unsigned()->index();
-            $table->foreign('group_id')->references('id')->on('groups')->onDelite('Cascade');
+            $table->foreign('group_id')->references('id')->on('groups')->onDelite('сascade');
             $table->timestamps();
         });
     }
@@ -29,7 +29,6 @@ class CreateStudentsTable extends Migration
      */
     public function down()
     {
-        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('students');
     }
 }

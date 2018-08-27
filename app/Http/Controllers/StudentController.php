@@ -24,10 +24,30 @@ class StudentController extends Controller
 
     public function filter($id)
     {
+        $marks=array();$i=0;$j=0;
         $group=$id;
         $subjects = Subject::all();
         $students = Student::where('group_id',$id)->get();
         $students=Student::where('group_id',$id)->with('marks','groups')->get();
+
+        // foreach ($students as $student)
+        // {
+        //   foreach ($subjects as $subject)
+        //   {
+        //     $marks[$i][$j]=$student->marks->where('subject_id',$subject->id)->first()->mark;
+        //     $j++;
+        //   }
+        //   $i++;
+        // }
+        // foreach ($students as $student)
+        // {
+        //   foreach ($subjects as $subject)
+        //   {
+        //     echo "$marks[$i][$j]\n";
+        //     $j++;
+        //   }
+        //   $i++;
+        // }
 
         return view('students.index', compact('students','subjects'));
     }

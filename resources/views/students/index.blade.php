@@ -7,8 +7,6 @@
             <!-- Students -->
             @if (count($students) > 0)
                 <div class="panel panel-default">
-
-
                   <div class="panel-body">
                       <table class="table task-table">
                           <thead>
@@ -27,11 +25,16 @@
                                       <td class="table-text"><div>{{ $student->group_id }}</div></td>
                                       @if (count($student->marks) > 0)
                                       @foreach ($subjects as $subject)
+                                      @if(!empty($student->marks->where('subject_id',$subject->id)->first()->mark))
                                       <td class="table-text"><div>{{ $student->marks->where('subject_id',$subject->id)->first()->mark }}</div></td>
+                                      @else <td class="table-text"><div>&nbsp;</div></td>
+                                      @endif
                                       @endforeach
                                       <td class="table-text"><div>{{ $student->marks->avg('mark') }}</div></td>
                                       @endif
-
+                                      @if ($student->marks->avg('mark')<=4.5)
+                                      echo '<table class="yellow">';
+                                          @endif
                                       <!-- Student Delete Button -->
                                       <td>
                                           <form action="{{route('students.destroy', $student->id)}}" method="POST">
