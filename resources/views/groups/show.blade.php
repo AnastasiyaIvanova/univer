@@ -23,15 +23,12 @@
                               @foreach ($students as $student)
                                   <tr class="table table-{{ $student->color()}}">
                                       <td class="table-text"><div>{{ $student->second_name }} {{ $student->first_name }} {{ $student->middle_name }}</div></td>
-                                      @if (!empty($student->day_of_birth))
                                       <td class="table-text"><div>{{ Carbon\Carbon::parse($student->day_of_birth)->format('d/m/Y') }}</div></td>
-                                      @else <td class="table-text"><div>&nbsp;</div></td>
-                                      @endif
                                       <td class="table-text"><div>{{ $student->group_id }}</div></td>
                                       @foreach ($subjects as $subject)
                                       <td class="table-text"><div>{{ $student->mark($subject->id) }}</div></td>
                                       @endforeach
-                                      <td class="table-text"><div>{{ round($student->marks->avg('mark'), 1) }}</div></td>
+                                      <td class="table-text"><div>{{ round($student->marks->avg('mark')) }}</div></td>
                                       <!-- Student Delete Button -->
                                       <td>
                                           <form action="{{route('students.show', $student->id)}}" method="GET">
@@ -51,18 +48,13 @@
                                               </button>
                                           </form>
                                       </td>
-
                                   </tr>
                               @endforeach
                           </tbody>
                       </table>
                   </div>
               </div>
-              <form action="{{route('students.create')}}" method="GET">
-                  <button type="submit" " class="btn btn-danger">
-                      <i class="fa fa-btn fa-trash"></i>Add
-                  </button>
-              </form>
+
     </div>
 </div>
 @endsection

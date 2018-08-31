@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Group;
-use App\Student;
+use App\Models\Group;
+use App\Models\Student;
+use App\Models\Subject;
 use App\Http\Requests;
 
 class GroupController extends Controller
 {
-    protected $groups;
     /**
      * Display a listing of the resource.
      *2
@@ -17,8 +17,14 @@ class GroupController extends Controller
      */
     public function index()
     {
+        $score=array();
         $groups = Group::all();
-        return view('groups.index', ['groups'=>$groups]);
+        foreach ($groups as $group) {
+            $score[$group->id]=round(($group->avg(1)+$group->avg(2)+$group->avg(3))/3, 1);
+        }
+
+        return view('groups.index', compact('groups', 'score'));
+        //['groups'=>$groups]);
     }
 
     /**
@@ -39,10 +45,7 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        Group::create([
-                 'name' => $request->name,
-             ]);
-
+        Group::create($request->all());
             return redirect('/groups');
     }
 
@@ -54,7 +57,10 @@ class GroupController extends Controller
      */
     public function show($id)
     {
-        //
+          $subjects = Subject::all();
+          $students=Student::where('group_id', $id)->with('marks', 'groups')->get();
+
+          return view('groups.show', compact('students', 'subjects'));
     }
 
     /**
@@ -65,7 +71,7 @@ class GroupController extends Controller
      */
     public function edit($id)
     {
-      Group::create([
+        Group::create([
                'name' => $request->name,
            ]);
 
@@ -92,7 +98,7 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-        Group::where('id',$id)->delete();
+        Group::where('id', $id)->delete();
         return redirect('/groups');
     }
 }

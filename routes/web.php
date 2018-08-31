@@ -12,15 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layout/app');
 });
 
 Route::resources([
     'groups' => 'GroupController',
     'students' => 'StudentController',
-    'marks' => 'MarkController',
-    'subjects' => 'subjectController'
+    'marks' => 'MarkController'
   ]);
-
-  Route::get('/student/{id}', 'StudentController@filter');
-  Route::get('average', 'AverageController@index');

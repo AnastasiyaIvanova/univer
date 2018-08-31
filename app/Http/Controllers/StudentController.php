@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Student;
-use App\Subject;
-use App\Mark;
-use App\Group;
+use App\Models\Student;
+use App\Models\Subject;
+use App\Models\Mark;
+use App\Models\Group;
 
 class StudentController extends Controller
 {
@@ -17,39 +17,12 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::all();
-
-        return view('students.index',['students'=>$students]);
-    }
-
-    public function filter($id)
-    {
-        $marks=array();$i=0;$j=0;
-        $group=$id;
+        //$students = Student::all();
         $subjects = Subject::all();
-        $students = Student::where('group_id',$id)->get();
-        $students=Student::where('group_id',$id)->with('marks','groups')->get();
+        $students=Student::with('marks', 'groups')->get();
 
-        // foreach ($students as $student)
-        // {
-        //   foreach ($subjects as $subject)
-        //   {
-        //     $marks[$i][$j]=$student->marks->where('subject_id',$subject->id)->first()->mark;
-        //     $j++;
-        //   }
-        //   $i++;
-        // }
-        // foreach ($students as $student)
-        // {
-        //   foreach ($subjects as $subject)
-        //   {
-        //     echo "$marks[$i][$j]\n";
-        //     $j++;
-        //   }
-        //   $i++;
-        // }
-
-        return view('students.index', compact('students','subjects'));
+        return view('students.index', compact('students', 'subjects'));
+        //['students'=>$students]);
     }
 
     /**
@@ -59,7 +32,8 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('students.create');
+        $group = Group::pluck('name', 'id');
+        return view('students.create')->with('group', $group);
     }
 
     /**
@@ -70,11 +44,8 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        Student::create(array(
-            'first_name' => $request->first_name,
-            'group_id' => $request->group_id
-        ));
-            return redirect('/groups');
+        Student::create($request->all());
+            return redirect('/students');
     }
 
     /**
@@ -85,7 +56,9 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        //
+        $subjects = Subject::all();
+        $student = Student::find($id);
+        return view('students.show', compact('student', 'subjects'));
     }
 
     /**
@@ -96,10 +69,9 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
+        $group = Group::pluck('name', 'id');
         $student = Student::find($id);
-        dd($group);
-        return view('students.edit')
-            ->with('student', $student);
+        return view('students.edit', compact('student', 'group'));
     }
 
     /**
@@ -111,14 +83,13 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Student::update(array(
-        //     'name' => $request->name,
-        //     'group_id' => $request->group_id
-        // ));
         $student = Student::findOrFail($id);
         $input = request()->all();
         $student->update($input);
-        return redirect('/groups');
+        return redirect()->action(
+            'StudentController@show',
+            ['id' => $id]
+        );
     }
 
     /**
@@ -129,7 +100,7 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        Student::where('id',$id)->delete();
+        Student::where('id', $id)->delete();
         return redirect('/students');
     }
 }
